@@ -1,18 +1,18 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  productCreateRequest,
-  productCreateSuccess,
-  productCreateFail,
-  getAllProductsShopRequest,
-  getAllProductsShopSuccess,
-  getAllProductsShopFailed,
-  deleteProductRequest,
-  deleteProductSuccess,
-  deleteProductFailed,
-  getAllProductsRequest,
-  getAllProductsSuccess,
-  getAllProductsFailed,
+  createProductRequest,
+  createProductSuccess,
+  createProductFailure,
+  fetchShopProductsRequest,
+  fetchShopProductsSuccess,
+  fetchShopProductsFailure,
+  removeProductRequest,
+  removeProductSuccess,
+  removeProductFailure,
+  fetchAllProductsRequest,
+  fetchAllProductsSuccess,
+  fetchAllProductsFailure,
 } from "../reducers/product";
 import { IProduct } from "../types";
 
@@ -32,39 +32,41 @@ interface CreateProductParams {
 }
 
 export const createProduct = createAsyncThunk(
-  "product/create",
+  "product/createProduct",
   async (productData: CreateProductParams, { dispatch }) => {
     try {
-      dispatch(productCreateRequest());
+      dispatch(createProductRequest());
 
       const { data } = await axios.post(`${server}/api/products`, productData, {
         withCredentials: true,
       });
 
-      dispatch(productCreateSuccess(data.product));
+      dispatch(createProductSuccess(data.product));
       return data.product as IProduct;
     } catch (error: unknown) {
       dispatch(
-        productCreateFail(error.response?.data?.message || "An error occurred")
+        createProductFailure(
+          error.response?.data?.message || "An error occurred"
+        )
       );
       throw error;
     }
   }
 );
 
-export const getAllProductsShop = createAsyncThunk(
-  "product/getAllShopProducts",
-  async (id: string, { dispatch }) => {
+export const fetchShopProducts = createAsyncThunk(
+  "product/fetchShopProducts",
+  async (shopId: string, { dispatch }) => {
     try {
-      dispatch(getAllProductsShopRequest());
+      dispatch(fetchShopProductsRequest());
 
-      const { data } = await axios.get(`${server}/api/products/shop/${id}`);
+      const { data } = await axios.get(`${server}/api/products/shop/${shopId}`);
 
-      dispatch(getAllProductsShopSuccess(data.products));
+      dispatch(fetchShopProductsSuccess(data.products));
       return data.products as IProduct[];
     } catch (error: unknown) {
       dispatch(
-        getAllProductsShopFailed(
+        fetchShopProductsFailure(
           error.response?.data?.message || "Failed to fetch shop products"
         )
       );
@@ -73,21 +75,24 @@ export const getAllProductsShop = createAsyncThunk(
   }
 );
 
-export const deleteProduct = createAsyncThunk(
-  "product/delete",
-  async (id: string, { dispatch }) => {
+export const removeProduct = createAsyncThunk(
+  "product/removeProduct",
+  async (productId: string, { dispatch }) => {
     try {
-      dispatch(deleteProductRequest());
+      dispatch(removeProductRequest());
 
-      const { data } = await axios.delete(`${server}/api/products/${id}`, {
-        withCredentials: true,
-      });
+      const { data } = await axios.delete(
+        `${server}/api/products/${productId}`,
+        {
+          withCredentials: true,
+        }
+      );
 
-      dispatch(deleteProductSuccess(data.message));
+      dispatch(removeProductSuccess(data.message));
       return data.message;
     } catch (error: unknown) {
       dispatch(
-        deleteProductFailed(
+        removeProductFailure(
           error.response?.data?.message || "Failed to delete product"
         )
       );
@@ -96,19 +101,19 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
-export const getAllProducts = createAsyncThunk(
-  "product/getAll",
+export const fetchAllProducts = createAsyncThunk(
+  "product/fetchAllProducts",
   async (_, { dispatch }) => {
     try {
-      dispatch(getAllProductsRequest());
+      dispatch(fetchAllProductsRequest());
 
       const { data } = await axios.get(`${server}/api/products`);
 
-      dispatch(getAllProductsSuccess(data.products));
+      dispatch(fetchAllProductsSuccess(data.products));
       return data.products as IProduct[];
     } catch (error: unknown) {
       dispatch(
-        getAllProductsFailed(
+        fetchAllProductsFailure(
           error.response?.data?.message || "Failed to fetch products"
         )
       );

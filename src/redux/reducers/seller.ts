@@ -9,15 +9,15 @@ const sellerSlice = createSlice({
   name: "seller",
   initialState,
   reducers: {
-    LoadSellerRequest: (state) => {
+    loadSellerRequest: (state) => {
       state.isLoading = true;
     },
-    LoadSellerSuccess: (state, action: PayloadAction<ISeller>) => {
+    loadSellerSuccess: (state, action: PayloadAction<ISeller>) => {
       state.isSeller = true;
       state.isLoading = false;
       state.seller = action.payload;
     },
-    LoadSellerFail: (state, action: PayloadAction<string>) => {
+    loadSellerFail: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
       state.isSeller = false;
@@ -30,7 +30,7 @@ const sellerSlice = createSlice({
       state.isLoading = false;
       state.sellers = action.payload;
     },
-    getAllSellerFailed: (state, action: PayloadAction<string>) => {
+    getAllSellersFailed: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
@@ -41,12 +41,12 @@ const sellerSlice = createSlice({
 });
 
 export const {
-  LoadSellerRequest,
-  LoadSellerSuccess,
-  LoadSellerFail,
+  loadSellerRequest,
+  loadSellerSuccess,
+  loadSellerFail,
   getAllSellersRequest,
   getAllSellersSuccess,
-  getAllSellerFailed,
+  getAllSellersFailed,
   clearErrors,
 } = sellerSlice.actions;
 export const sellerReducer = sellerSlice.reducer;

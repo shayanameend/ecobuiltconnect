@@ -1,9 +1,9 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  LoadUserRequest,
-  LoadUserSuccess,
-  LoadUserFail,
+  loadUserRequest,
+  loadUserSuccess,
+  loadUserFail,
   updateUserInfoRequest,
   updateUserInfoSuccess,
   updateUserInfoFailed,
@@ -18,9 +18,9 @@ import {
   getAllUsersFailed,
 } from "../reducers/user";
 import {
-  LoadSellerRequest,
-  LoadSellerSuccess,
-  LoadSellerFail,
+  loadSellerRequest,
+  loadSellerSuccess,
+  loadSellerFail,
 } from "../reducers/seller";
 
 const server = process.env.BACKEND_URL;
@@ -29,15 +29,15 @@ export const loadUser = createAsyncThunk(
   "user/loadUser",
   async (_, { dispatch }) => {
     try {
-      dispatch(LoadUserRequest());
+      dispatch(loadUserRequest());
       const { data } = await axios.get(`${server}/api/users/me`, {
         withCredentials: true,
       });
-      dispatch(LoadUserSuccess(data.user));
+      dispatch(loadUserSuccess(data.user));
       return data.user;
     } catch (error: unknown) {
       dispatch(
-        LoadUserFail(error.response?.data?.message || "Failed to load user")
+        loadUserFail(error.response?.data?.message || "Failed to load user")
       );
       throw error;
     }
@@ -48,15 +48,15 @@ export const loadSeller = createAsyncThunk(
   "user/loadSeller",
   async (_, { dispatch }) => {
     try {
-      dispatch(LoadSellerRequest());
+      dispatch(loadSellerRequest());
       const { data } = await axios.get(`${server}/api/shops/me`, {
         withCredentials: true,
       });
-      dispatch(LoadSellerSuccess(data.seller));
+      dispatch(loadSellerSuccess(data.seller));
       return data.seller;
     } catch (error: unknown) {
       dispatch(
-        LoadSellerFail(error.response?.data?.message || "Failed to load seller")
+        loadSellerFail(error.response?.data?.message || "Failed to load seller")
       );
       throw error;
     }
@@ -111,7 +111,7 @@ export const updateUserInformation = createAsyncThunk(
   }
 );
 
-export const updatUserAddress = createAsyncThunk(
+export const updateUserAddress = createAsyncThunk(
   "user/updateAddress",
   async (
     {

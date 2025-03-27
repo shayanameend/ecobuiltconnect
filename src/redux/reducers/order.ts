@@ -9,38 +9,38 @@ const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    getAllOrdersUserRequest: (state) => {
+    getUserOrdersRequest: (state) => {
       state.isLoading = true;
     },
-    getAllOrdersUserSuccess: (state, action: PayloadAction<IOrder[]>) => {
+    getUserOrdersSuccess: (state, action: PayloadAction<IOrder[]>) => {
       state.isLoading = false;
-      state.orders = action.payload;
+      state.userOrders = action.payload;
     },
-    getAllOrdersUserFailed: (state, action: PayloadAction<string>) => {
+    getUserOrdersFailed: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
 
-    getAllOrdersShopRequest: (state) => {
+    getShopOrdersRequest: (state) => {
       state.isLoading = true;
     },
-    getAllOrdersShopSuccess: (state, action: PayloadAction<IOrder[]>) => {
+    getShopOrdersSuccess: (state, action: PayloadAction<IOrder[]>) => {
       state.isLoading = false;
       state.orders = action.payload;
     },
-    getAllOrdersShopFailed: (state, action: PayloadAction<string>) => {
+    getShopOrdersFailed: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
 
-    adminAllOrdersRequest: (state) => {
+    getAdminOrdersRequest: (state) => {
       state.adminOrderLoading = true;
     },
-    adminAllOrdersSuccess: (state, action: PayloadAction<IOrder[]>) => {
+    getAdminOrdersSuccess: (state, action: PayloadAction<IOrder[]>) => {
       state.adminOrderLoading = false;
       state.adminOrders = action.payload;
     },
-    adminAllOrdersFailed: (state, action: PayloadAction<string>) => {
+    getAdminOrdersFailed: (state, action: PayloadAction<string>) => {
       state.adminOrderLoading = false;
       state.error = action.payload;
     },
@@ -52,15 +52,15 @@ const orderSlice = createSlice({
 });
 
 export const {
-  getAllOrdersUserRequest,
-  getAllOrdersUserSuccess,
-  getAllOrdersUserFailed,
-  getAllOrdersShopRequest,
-  getAllOrdersShopSuccess,
-  getAllOrdersShopFailed,
-  adminAllOrdersRequest,
-  adminAllOrdersSuccess,
-  adminAllOrdersFailed,
+  getUserOrdersRequest,
+  getUserOrdersSuccess,
+  getUserOrdersFailed,
+  getShopOrdersRequest,
+  getShopOrdersSuccess,
+  getShopOrdersFailed,
+  getAdminOrdersRequest,
+  getAdminOrdersSuccess,
+  getAdminOrdersFailed,
   clearErrors,
 } = orderSlice.actions;
 export const orderReducer = orderSlice.reducer;

@@ -1,18 +1,18 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  eventCreateRequest,
-  eventCreateSuccess,
-  eventCreateFail,
-  getAlleventsShopRequest,
-  getAlleventsShopSuccess,
-  getAlleventsShopFailed,
-  deleteeventRequest,
-  deleteeventSuccess,
-  deleteeventFailed,
-  getAlleventsRequest,
-  getAlleventsSuccess,
-  getAlleventsFailed,
+  createEventRequest,
+  createEventSuccess,
+  createEventFailure,
+  fetchShopEventsRequest,
+  fetchShopEventsSuccess,
+  fetchShopEventsFailure,
+  removeEventRequest,
+  removeEventSuccess,
+  removeEventFailure,
+  fetchAllEventsRequest,
+  fetchAllEventsSuccess,
+  fetchAllEventsFailure,
 } from "../reducers/event";
 import { IEvent } from "../types";
 
@@ -31,24 +31,24 @@ interface CreateEventParams {
 
 // create event
 export const createEvent = createAsyncThunk(
-  "event/create",
-  async (data: CreateEventParams, { dispatch }) => {
+  "event/createEvent",
+  async (eventData: CreateEventParams, { dispatch }) => {
     try {
-      dispatch(eventCreateRequest());
+      dispatch(createEventRequest());
 
       const { data: responseData } = await axios.post(
         `${server}/api/events`,
-        data,
+        eventData,
         {
           withCredentials: true,
         }
       );
 
-      dispatch(eventCreateSuccess(responseData.event));
+      dispatch(createEventSuccess(responseData.event));
       return responseData.event as IEvent;
     } catch (error: unknown) {
       dispatch(
-        eventCreateFail(
+        createEventFailure(
           error.response?.data?.message || "Failed to create event"
         )
       );
@@ -58,19 +58,19 @@ export const createEvent = createAsyncThunk(
 );
 
 // get all events of a shop
-export const getAllEventsShop = createAsyncThunk(
-  "event/getAllShopEvents",
-  async (id: string, { dispatch }) => {
+export const fetchShopEvents = createAsyncThunk(
+  "event/fetchShopEvents",
+  async (shopId: string, { dispatch }) => {
     try {
-      dispatch(getAlleventsShopRequest());
+      dispatch(fetchShopEventsRequest());
 
-      const { data } = await axios.get(`${server}/api/events/shop/${id}`);
+      const { data } = await axios.get(`${server}/api/events/shop/${shopId}`);
 
-      dispatch(getAlleventsShopSuccess(data.events));
+      dispatch(fetchShopEventsSuccess(data.events));
       return data.events as IEvent[];
     } catch (error: unknown) {
       dispatch(
-        getAlleventsShopFailed(
+        fetchShopEventsFailure(
           error.response?.data?.message || "Failed to fetch shop events"
         )
       );
@@ -80,21 +80,21 @@ export const getAllEventsShop = createAsyncThunk(
 );
 
 // delete event of a shop
-export const deleteEvent = createAsyncThunk(
-  "event/delete",
-  async (id: string, { dispatch }) => {
+export const removeEvent = createAsyncThunk(
+  "event/removeEvent",
+  async (eventId: string, { dispatch }) => {
     try {
-      dispatch(deleteeventRequest());
+      dispatch(removeEventRequest());
 
-      const { data } = await axios.delete(`${server}/api/events/${id}`, {
+      const { data } = await axios.delete(`${server}/api/events/${eventId}`, {
         withCredentials: true,
       });
 
-      dispatch(deleteeventSuccess(data.message));
+      dispatch(removeEventSuccess(data.message));
       return data.message;
     } catch (error: unknown) {
       dispatch(
-        deleteeventFailed(
+        removeEventFailure(
           error.response?.data?.message || "Failed to delete event"
         )
       );
@@ -104,19 +104,19 @@ export const deleteEvent = createAsyncThunk(
 );
 
 // get all events
-export const getAllEvents = createAsyncThunk(
-  "event/getAll",
+export const fetchAllEvents = createAsyncThunk(
+  "event/fetchAllEvents",
   async (_, { dispatch }) => {
     try {
-      dispatch(getAlleventsRequest());
+      dispatch(fetchAllEventsRequest());
 
       const { data } = await axios.get(`${server}/api/events`);
 
-      dispatch(getAlleventsSuccess(data.events));
+      dispatch(fetchAllEventsSuccess(data.events));
       return data.events as IEvent[];
     } catch (error: unknown) {
       dispatch(
-        getAlleventsFailed(
+        fetchAllEventsFailure(
           error.response?.data?.message || "Failed to fetch events"
         )
       );

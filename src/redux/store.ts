@@ -8,17 +8,17 @@ import { wishlistReducer } from "./reducers/wishlist";
 import { orderReducer } from "./reducers/order";
 import { RootState } from "./types";
 
-export const Store = configureStore({
+export const store = configureStore({
   reducer: {
     user: userReducer,
     seller: sellerReducer,
-    products: productReducer,
-    events: eventReducer,
+    product: productReducer,
+    event: eventReducer,
     cart: cartReducer,
     wishlist: wishlistReducer,
     order: orderReducer,
   },
 });
 
-export type AppDispatch = typeof Store.dispatch;
+export type AppDispatch = typeof store.dispatch;
 export type StoreState = RootState;

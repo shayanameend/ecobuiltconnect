@@ -9,52 +9,52 @@ const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    productCreateRequest: (state) => {
+    createProductRequest: (state) => {
       state.isLoading = true;
     },
-    productCreateSuccess: (state, action: PayloadAction<IProduct>) => {
+    createProductSuccess: (state, action: PayloadAction<IProduct>) => {
       state.isLoading = false;
       state.product = action.payload;
       state.success = true;
     },
-    productCreateFail: (state, action: PayloadAction<string>) => {
+    createProductFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
       state.success = false;
     },
 
-    getAllProductsShopRequest: (state) => {
+    fetchShopProductsRequest: (state) => {
       state.isLoading = true;
     },
-    getAllProductsShopSuccess: (state, action: PayloadAction<IProduct[]>) => {
+    fetchShopProductsSuccess: (state, action: PayloadAction<IProduct[]>) => {
       state.isLoading = false;
       state.products = action.payload;
     },
-    getAllProductsShopFailed: (state, action: PayloadAction<string>) => {
+    fetchShopProductsFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
 
-    deleteProductRequest: (state) => {
+    removeProductRequest: (state) => {
       state.isLoading = true;
     },
-    deleteProductSuccess: (state, action: PayloadAction<string>) => {
+    removeProductSuccess: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.message = action.payload;
     },
-    deleteProductFailed: (state, action: PayloadAction<string>) => {
+    removeProductFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
 
-    getAllProductsRequest: (state) => {
+    fetchAllProductsRequest: (state) => {
       state.isLoading = true;
     },
-    getAllProductsSuccess: (state, action: PayloadAction<IProduct[]>) => {
+    fetchAllProductsSuccess: (state, action: PayloadAction<IProduct[]>) => {
       state.isLoading = false;
       state.allProducts = action.payload;
     },
-    getAllProductsFailed: (state, action: PayloadAction<string>) => {
+    fetchAllProductsFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
@@ -66,18 +66,18 @@ const productSlice = createSlice({
 });
 
 export const {
-  productCreateRequest,
-  productCreateSuccess,
-  productCreateFail,
-  getAllProductsShopRequest,
-  getAllProductsShopSuccess,
-  getAllProductsShopFailed,
-  deleteProductRequest,
-  deleteProductSuccess,
-  deleteProductFailed,
-  getAllProductsRequest,
-  getAllProductsSuccess,
-  getAllProductsFailed,
+  createProductRequest,
+  createProductSuccess,
+  createProductFailure,
+  fetchShopProductsRequest,
+  fetchShopProductsSuccess,
+  fetchShopProductsFailure,
+  removeProductRequest,
+  removeProductSuccess,
+  removeProductFailure,
+  fetchAllProductsRequest,
+  fetchAllProductsSuccess,
+  fetchAllProductsFailure,
   clearErrors,
 } = productSlice.actions;
 export const productReducer = productSlice.reducer;

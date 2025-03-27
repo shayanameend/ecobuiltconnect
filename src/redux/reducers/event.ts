@@ -9,52 +9,52 @@ const eventSlice = createSlice({
   name: "event",
   initialState,
   reducers: {
-    eventCreateRequest: (state) => {
+    createEventRequest: (state) => {
       state.isLoading = true;
     },
-    eventCreateSuccess: (state, action: PayloadAction<IEvent>) => {
+    createEventSuccess: (state, action: PayloadAction<IEvent>) => {
       state.isLoading = false;
       state.event = action.payload;
       state.success = true;
     },
-    eventCreateFail: (state, action: PayloadAction<string>) => {
+    createEventFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
       state.success = false;
     },
 
-    getAlleventsShopRequest: (state) => {
+    fetchShopEventsRequest: (state) => {
       state.isLoading = true;
     },
-    getAlleventsShopSuccess: (state, action: PayloadAction<IEvent[]>) => {
+    fetchShopEventsSuccess: (state, action: PayloadAction<IEvent[]>) => {
       state.isLoading = false;
       state.events = action.payload;
     },
-    getAlleventsShopFailed: (state, action: PayloadAction<string>) => {
+    fetchShopEventsFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
 
-    deleteeventRequest: (state) => {
+    removeEventRequest: (state) => {
       state.isLoading = true;
     },
-    deleteeventSuccess: (state, action: PayloadAction<string>) => {
+    removeEventSuccess: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.message = action.payload;
     },
-    deleteeventFailed: (state, action: PayloadAction<string>) => {
+    removeEventFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
 
-    getAlleventsRequest: (state) => {
+    fetchAllEventsRequest: (state) => {
       state.isLoading = true;
     },
-    getAlleventsSuccess: (state, action: PayloadAction<IEvent[]>) => {
+    fetchAllEventsSuccess: (state, action: PayloadAction<IEvent[]>) => {
       state.isLoading = false;
       state.allEvents = action.payload;
     },
-    getAlleventsFailed: (state, action: PayloadAction<string>) => {
+    fetchAllEventsFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
@@ -66,18 +66,18 @@ const eventSlice = createSlice({
 });
 
 export const {
-  eventCreateRequest,
-  eventCreateSuccess,
-  eventCreateFail,
-  getAlleventsShopRequest,
-  getAlleventsShopSuccess,
-  getAlleventsShopFailed,
-  deleteeventRequest,
-  deleteeventSuccess,
-  deleteeventFailed,
-  getAlleventsRequest,
-  getAlleventsSuccess,
-  getAlleventsFailed,
+  createEventRequest,
+  createEventSuccess,
+  createEventFailure,
+  fetchShopEventsRequest,
+  fetchShopEventsSuccess,
+  fetchShopEventsFailure,
+  removeEventRequest,
+  removeEventSuccess,
+  removeEventFailure,
+  fetchAllEventsRequest,
+  fetchAllEventsSuccess,
+  fetchAllEventsFailure,
   clearErrors,
 } = eventSlice.actions;
 export const eventReducer = eventSlice.reducer;

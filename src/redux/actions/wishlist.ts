@@ -1,35 +1,35 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  addToWishlist as addToWishlistAction,
-  removeFromWishlist as removeFromWishlistAction,
+  addProductToWishlist as addProductToWishlistAction,
+  removeProductFromWishlist as removeProductFromWishlistAction,
 } from "../reducers/wishlist";
 import { IProduct } from "../types";
 import { StoreState } from "../store";
 
-export const addToWishlist = createAsyncThunk(
-  "wishlist/add",
-  async (data: IProduct, { dispatch, getState }) => {
-    dispatch(addToWishlistAction(data));
+export const addProductToWishlist = createAsyncThunk(
+  "wishlist/addProduct",
+  async (product: IProduct, { dispatch, getState }) => {
+    dispatch(addProductToWishlistAction(product));
 
     localStorage.setItem(
       "wishlistItems",
-      JSON.stringify((getState() as StoreState).wishlist.wishlist)
+      JSON.stringify((getState() as StoreState).wishlist.wishlistItems)
     );
 
-    return data;
+    return product;
   }
 );
 
-export const removeFromWishlist = createAsyncThunk(
-  "wishlist/remove",
-  async (data: IProduct, { dispatch, getState }) => {
-    dispatch(removeFromWishlistAction(data._id));
+export const removeProductFromWishlist = createAsyncThunk(
+  "wishlist/removeProduct",
+  async (product: IProduct, { dispatch, getState }) => {
+    dispatch(removeProductFromWishlistAction(product._id));
 
     localStorage.setItem(
       "wishlistItems",
-      JSON.stringify((getState() as StoreState).wishlist.wishlist)
+      JSON.stringify((getState() as StoreState).wishlist.wishlistItems)
     );
 
-    return data;
+    return product;
   }
 );

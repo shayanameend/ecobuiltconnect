@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAllSellersRequest,
   getAllSellersSuccess,
-  getAllSellerFailed,
+  getAllSellersFailed,
 } from "../reducers/seller";
 import { ISeller } from "../types";
 
@@ -23,7 +23,7 @@ export const getAllSellers = createAsyncThunk(
       return data.sellers as ISeller[];
     } catch (error: unknown) {
       dispatch(
-        getAllSellerFailed(
+        getAllSellersFailed(
           error.response?.data?.message || "Failed to fetch sellers"
         )
       );

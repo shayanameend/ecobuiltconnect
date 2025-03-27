@@ -22,8 +22,8 @@ export interface IAddress {
 
 export interface IUserState {
   isAuthenticated: boolean;
-  loading?: boolean;
-  addressloading?: boolean;
+  isLoading?: boolean;
+  addressLoading?: boolean;
   usersLoading?: boolean;
   user?: IUser;
   users?: IUser[];
@@ -107,12 +107,12 @@ export interface ICartItem extends IProduct {
 }
 
 export interface ICartState {
-  cart: ICartItem[];
+  cartItems: ICartItem[];
 }
 
 // Wishlist related types
 export interface IWishlistState {
-  wishlist: IProduct[];
+  wishlistItems: IProduct[];
 }
 
 // Order related types
@@ -142,8 +142,8 @@ export interface IOrder {
 
 export interface IOrderState {
   isLoading: boolean;
-  adminOrderLoading?: boolean;
-  orders?: IOrder[];
+  adminOrdersLoading?: boolean;
+  userOrders?: IOrder[];
   adminOrders?: IOrder[];
   error?: string | null;
 }
@@ -152,8 +152,8 @@ export interface IOrderState {
 export interface RootState {
   user: IUserState;
   seller: ISellerState;
-  products: IProductState;
-  events: IEventState;
+  product: IProductState;
+  event: IEventState;
   cart: ICartState;
   wishlist: IWishlistState;
   order: IOrderState;

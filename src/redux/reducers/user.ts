@@ -14,15 +14,15 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    LoadUserRequest: (state) => {
+    loadUserRequest: (state) => {
       state.loading = true;
     },
-    LoadUserSuccess: (state, action: PayloadAction<IUser>) => {
+    loadUserSuccess: (state, action: PayloadAction<IUser>) => {
       state.isAuthenticated = true;
       state.loading = false;
       state.user = action.payload;
     },
-    LoadUserFail: (state, action: PayloadAction<string>) => {
+    loadUserFail: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.error = action.payload;
       state.isAuthenticated = false;
@@ -94,9 +94,9 @@ const userSlice = createSlice({
 });
 
 export const {
-  LoadUserRequest,
-  LoadUserSuccess,
-  LoadUserFail,
+  loadUserRequest,
+  loadUserSuccess,
+  loadUserFail,
   updateUserInfoRequest,
   updateUserInfoSuccess,
   updateUserInfoFailed,

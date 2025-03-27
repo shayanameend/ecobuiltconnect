@@ -1,35 +1,35 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  getAllOrdersUserRequest,
-  getAllOrdersUserSuccess,
-  getAllOrdersUserFailed,
-  getAllOrdersShopRequest,
-  getAllOrdersShopSuccess,
-  getAllOrdersShopFailed,
-  adminAllOrdersRequest,
-  adminAllOrdersSuccess,
-  adminAllOrdersFailed,
+  getUserOrdersRequest,
+  getUserOrdersSuccess,
+  getUserOrdersFailed,
+  getShopOrdersRequest,
+  getShopOrdersSuccess,
+  getShopOrdersFailed,
+  getAdminOrdersRequest,
+  getAdminOrdersSuccess,
+  getAdminOrdersFailed,
 } from "../reducers/order";
 import { IOrder } from "../types";
 
 const server = process.env.BACKEND_URL;
 
-export const getAllOrdersOfUser = createAsyncThunk(
-  "order/getAllUserOrders",
+export const getUserOrders = createAsyncThunk(
+  "order/getUserOrders",
   async (userId: string, { dispatch }) => {
     try {
-      dispatch(getAllOrdersUserRequest());
+      dispatch(getUserOrdersRequest());
 
       const { data } = await axios.get(`${server}/api/orders/user/${userId}`, {
         withCredentials: true,
       });
 
-      dispatch(getAllOrdersUserSuccess(data.orders));
+      dispatch(getUserOrdersSuccess(data.orders));
       return data.orders as IOrder[];
     } catch (error: unknown) {
       dispatch(
-        getAllOrdersUserFailed(
+        getUserOrdersFailed(
           error.response?.data?.message || "Failed to fetch user orders"
         )
       );
@@ -38,22 +38,22 @@ export const getAllOrdersOfUser = createAsyncThunk(
   }
 );
 
-export const getAllOrdersOfShop = createAsyncThunk(
-  "order/getAllShopOrders",
+export const getShopOrders = createAsyncThunk(
+  "order/getShopOrders",
   async (shopId: string, { dispatch }) => {
     try {
-      dispatch(getAllOrdersShopRequest());
+      dispatch(getShopOrdersRequest());
 
       const { data } = await axios.get(
         `${server}/api/orders/seller/${shopId}`,
         { withCredentials: true }
       );
 
-      dispatch(getAllOrdersShopSuccess(data.orders));
+      dispatch(getShopOrdersSuccess(data.orders));
       return data.orders as IOrder[];
     } catch (error: unknown) {
       dispatch(
-        getAllOrdersShopFailed(
+        getShopOrdersFailed(
           error.response?.data?.message || "Failed to fetch shop orders"
         )
       );
@@ -62,21 +62,21 @@ export const getAllOrdersOfShop = createAsyncThunk(
   }
 );
 
-export const getAllOrdersOfAdmin = createAsyncThunk(
-  "order/getAllAdminOrders",
+export const getAdminOrders = createAsyncThunk(
+  "order/getAdminOrders",
   async (_, { dispatch }) => {
     try {
-      dispatch(adminAllOrdersRequest());
+      dispatch(getAdminOrdersRequest());
 
       const { data } = await axios.get(`${server}/api/orders/admin`, {
         withCredentials: true,
       });
 
-      dispatch(adminAllOrdersSuccess(data.orders));
+      dispatch(getAdminOrdersSuccess(data.orders));
       return data.orders as IOrder[];
     } catch (error: unknown) {
       dispatch(
-        adminAllOrdersFailed(
+        getAdminOrdersFailed(
           error.response?.data?.message || "Failed to fetch admin orders"
         )
       );
