@@ -15,7 +15,7 @@ export const getAllSellers = createAsyncThunk(
     try {
       dispatch(getAllSellersRequest());
 
-      const { data } = await axios.get(`${server}/shop/admin-all-sellers`, {
+      const { data } = await axios.get(`${server}/api/shops/admin/all`, {
         withCredentials: true,
       });
 

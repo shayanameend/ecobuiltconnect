@@ -37,11 +37,9 @@ export const createProduct = createAsyncThunk(
     try {
       dispatch(productCreateRequest());
 
-      const { data } = await axios.post(
-        `${server}/product/create-product`,
-        productData,
-        { withCredentials: true }
-      );
+      const { data } = await axios.post(`${server}/api/products`, productData, {
+        withCredentials: true,
+      });
 
       dispatch(productCreateSuccess(data.product));
       return data.product as IProduct;
@@ -60,9 +58,7 @@ export const getAllProductsShop = createAsyncThunk(
     try {
       dispatch(getAllProductsShopRequest());
 
-      const { data } = await axios.get(
-        `${server}/product/get-all-products-shop/${id}`
-      );
+      const { data } = await axios.get(`${server}/api/products/shop/${id}`);
 
       dispatch(getAllProductsShopSuccess(data.products));
       return data.products as IProduct[];
@@ -83,12 +79,9 @@ export const deleteProduct = createAsyncThunk(
     try {
       dispatch(deleteProductRequest());
 
-      const { data } = await axios.delete(
-        `${server}/product/delete-shop-product/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const { data } = await axios.delete(`${server}/api/products/${id}`, {
+        withCredentials: true,
+      });
 
       dispatch(deleteProductSuccess(data.message));
       return data.message;
@@ -109,7 +102,7 @@ export const getAllProducts = createAsyncThunk(
     try {
       dispatch(getAllProductsRequest());
 
-      const { data } = await axios.get(`${server}/product/get-all-products`);
+      const { data } = await axios.get(`${server}/api/products`);
 
       dispatch(getAllProductsSuccess(data.products));
       return data.products as IProduct[];

@@ -21,10 +21,9 @@ export const getAllOrdersOfUser = createAsyncThunk(
     try {
       dispatch(getAllOrdersUserRequest());
 
-      const { data } = await axios.get(
-        `${server}/order/get-all-orders/${userId}`,
-        { withCredentials: true }
-      );
+      const { data } = await axios.get(`${server}/api/orders/user/${userId}`, {
+        withCredentials: true,
+      });
 
       dispatch(getAllOrdersUserSuccess(data.orders));
       return data.orders as IOrder[];
@@ -46,7 +45,7 @@ export const getAllOrdersOfShop = createAsyncThunk(
       dispatch(getAllOrdersShopRequest());
 
       const { data } = await axios.get(
-        `${server}/order/get-seller-all-orders/${shopId}`,
+        `${server}/api/orders/seller/${shopId}`,
         { withCredentials: true }
       );
 
@@ -69,7 +68,7 @@ export const getAllOrdersOfAdmin = createAsyncThunk(
     try {
       dispatch(adminAllOrdersRequest());
 
-      const { data } = await axios.get(`${server}/order/admin-all-orders`, {
+      const { data } = await axios.get(`${server}/api/orders/admin`, {
         withCredentials: true,
       });
 

@@ -30,7 +30,7 @@ export const loadUser = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       dispatch(LoadUserRequest());
-      const { data } = await axios.get(`${server}/user/getuser`, {
+      const { data } = await axios.get(`${server}/api/users/me`, {
         withCredentials: true,
       });
       dispatch(LoadUserSuccess(data.user));
@@ -49,7 +49,7 @@ export const loadSeller = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       dispatch(LoadSellerRequest());
-      const { data } = await axios.get(`${server}/shop/getSeller`, {
+      const { data } = await axios.get(`${server}/api/shops/me`, {
         withCredentials: true,
       });
       dispatch(LoadSellerSuccess(data.seller));
@@ -83,7 +83,7 @@ export const updateUserInformation = createAsyncThunk(
       dispatch(updateUserInfoRequest());
 
       const { data } = await axios.put(
-        `${server}/user/update-user-info`,
+        `${server}/api/users/info`,
         {
           email,
           password,
@@ -135,7 +135,7 @@ export const updatUserAddress = createAsyncThunk(
       dispatch(updateUserAddressRequest());
 
       const { data } = await axios.put(
-        `${server}/user/update-user-addresses`,
+        `${server}/api/users/address`,
         {
           country,
           city,
@@ -171,10 +171,9 @@ export const deleteUserAddress = createAsyncThunk(
     try {
       dispatch(deleteUserAddressRequest());
 
-      const { data } = await axios.delete(
-        `${server}/user/delete-user-address/${id}`,
-        { withCredentials: true }
-      );
+      const { data } = await axios.delete(`${server}/api/users/address/${id}`, {
+        withCredentials: true,
+      });
 
       dispatch(
         deleteUserAddressSuccess({
@@ -200,7 +199,7 @@ export const getAllUsers = createAsyncThunk(
     try {
       dispatch(getAllUsersRequest());
 
-      const { data } = await axios.get(`${server}/user/admin-all-users`, {
+      const { data } = await axios.get(`${server}/api/users/admin/all`, {
         withCredentials: true,
       });
 

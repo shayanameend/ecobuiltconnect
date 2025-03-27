@@ -37,7 +37,7 @@ export const createEvent = createAsyncThunk(
       dispatch(eventCreateRequest());
 
       const { data: responseData } = await axios.post(
-        `${server}/event/create-event`,
+        `${server}/api/events`,
         data,
         {
           withCredentials: true,
@@ -64,7 +64,7 @@ export const getAllEventsShop = createAsyncThunk(
     try {
       dispatch(getAlleventsShopRequest());
 
-      const { data } = await axios.get(`${server}/event/get-all-events/${id}`);
+      const { data } = await axios.get(`${server}/api/events/shop/${id}`);
 
       dispatch(getAlleventsShopSuccess(data.events));
       return data.events as IEvent[];
@@ -86,12 +86,9 @@ export const deleteEvent = createAsyncThunk(
     try {
       dispatch(deleteeventRequest());
 
-      const { data } = await axios.delete(
-        `${server}/event/delete-shop-event/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const { data } = await axios.delete(`${server}/api/events/${id}`, {
+        withCredentials: true,
+      });
 
       dispatch(deleteeventSuccess(data.message));
       return data.message;
@@ -113,7 +110,7 @@ export const getAllEvents = createAsyncThunk(
     try {
       dispatch(getAlleventsRequest());
 
-      const { data } = await axios.get(`${server}/event/get-all-events`);
+      const { data } = await axios.get(`${server}/api/events`);
 
       dispatch(getAlleventsSuccess(data.events));
       return data.events as IEvent[];
