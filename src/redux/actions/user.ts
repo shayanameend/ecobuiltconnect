@@ -1,53 +1,86 @@
 import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  LoadUserRequest,
+  LoadUserSuccess,
+  LoadUserFail,
+  updateUserInfoRequest,
+  updateUserInfoSuccess,
+  updateUserInfoFailed,
+  updateUserAddressRequest,
+  updateUserAddressSuccess,
+  updateUserAddressFailed,
+  deleteUserAddressRequest,
+  deleteUserAddressSuccess,
+  deleteUserAddressFailed,
+  getAllUsersRequest,
+  getAllUsersSuccess,
+  getAllUsersFailed,
+} from "../reducers/user";
+import {
+  LoadSellerRequest,
+  LoadSellerSuccess,
+  LoadSellerFail,
+} from "../reducers/seller";
 
 const server = process.env.BACKEND_URL;
 
-export const loadUser = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "LoadUserRequest",
-    });
-    const { data } = await axios.get(`${server}/user/getuser`, {
-      withCredentials: true,
-    });
-    dispatch({
-      type: "LoadUserSuccess",
-      payload: data.user,
-    });
-  } catch (error) {
-    dispatch({
-      type: "LoadUserFail",
-      payload: error.response.data.message,
-    });
-  }
-};
-
-export const loadSeller = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "LoadSellerRequest",
-    });
-    const { data } = await axios.get(`${server}/shop/getSeller`, {
-      withCredentials: true,
-    });
-    dispatch({
-      type: "LoadSellerSuccess",
-      payload: data.seller,
-    });
-  } catch (error) {
-    dispatch({
-      type: "LoadSellerFail",
-      payload: error.response.data.message,
-    });
-  }
-};
-
-export const updateUserInformation =
-  (name, email, phoneNumber, password) => async (dispatch) => {
+export const loadUser = createAsyncThunk(
+  "user/loadUser",
+  async (_, { dispatch }) => {
     try {
-      dispatch({
-        type: "updateUserInfoRequest",
+      dispatch(LoadUserRequest());
+      const { data } = await axios.get(`${server}/user/getuser`, {
+        withCredentials: true,
       });
+      dispatch(LoadUserSuccess(data.user));
+      return data.user;
+    } catch (error: unknown) {
+      dispatch(
+        LoadUserFail(error.response?.data?.message || "Failed to load user")
+      );
+      throw error;
+    }
+  }
+);
+
+export const loadSeller = createAsyncThunk(
+  "user/loadSeller",
+  async (_, { dispatch }) => {
+    try {
+      dispatch(LoadSellerRequest());
+      const { data } = await axios.get(`${server}/shop/getSeller`, {
+        withCredentials: true,
+      });
+      dispatch(LoadSellerSuccess(data.seller));
+      return data.seller;
+    } catch (error: unknown) {
+      dispatch(
+        LoadSellerFail(error.response?.data?.message || "Failed to load seller")
+      );
+      throw error;
+    }
+  }
+);
+
+export const updateUserInformation = createAsyncThunk(
+  "user/updateInfo",
+  async (
+    {
+      name,
+      email,
+      phoneNumber,
+      password,
+    }: {
+      name: string;
+      email: string;
+      phoneNumber: string;
+      password: string;
+    },
+    { dispatch }
+  ) => {
+    try {
+      dispatch(updateUserInfoRequest());
 
       const { data } = await axios.put(
         `${server}/user/update-user-info`,
@@ -65,25 +98,41 @@ export const updateUserInformation =
         }
       );
 
-      dispatch({
-        type: "updateUserInfoSuccess",
-        payload: data.user,
-      });
-    } catch (error) {
-      dispatch({
-        type: "updateUserInfoFailed",
-        payload: error.response.data.message,
-      });
+      dispatch(updateUserInfoSuccess(data.user));
+      return data.user;
+    } catch (error: unknown) {
+      dispatch(
+        updateUserInfoFailed(
+          error.response?.data?.message || "Failed to update user information"
+        )
+      );
+      throw error;
     }
-  };
+  }
+);
 
-export const updatUserAddress =
-  (country, city, address1, address2, zipCode, addressType) =>
-  async (dispatch) => {
+export const updatUserAddress = createAsyncThunk(
+  "user/updateAddress",
+  async (
+    {
+      country,
+      city,
+      address1,
+      address2,
+      zipCode,
+      addressType,
+    }: {
+      country: string;
+      city: string;
+      address1: string;
+      address2: string;
+      zipCode: string;
+      addressType: string;
+    },
+    { dispatch }
+  ) => {
     try {
-      dispatch({
-        type: "updateUserAddressRequest",
-      });
+      dispatch(updateUserAddressRequest());
 
       const { data } = await axios.put(
         `${server}/user/update-user-addresses`,
@@ -98,65 +147,72 @@ export const updatUserAddress =
         { withCredentials: true }
       );
 
-      dispatch({
-        type: "updateUserAddressSuccess",
-        payload: {
-          successMessage: "User address updated succesfully!",
+      dispatch(
+        updateUserAddressSuccess({
+          successMessage: "User address updated successfully!",
           user: data.user,
-        },
-      });
-    } catch (error) {
-      dispatch({
-        type: "updateUserAddressFailed",
-        payload: error.response.data.message,
-      });
+        })
+      );
+      return data.user;
+    } catch (error: unknown) {
+      dispatch(
+        updateUserAddressFailed(
+          error.response?.data?.message || "Failed to update address"
+        )
+      );
+      throw error;
     }
-  };
-
-export const deleteUserAddress = (id) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "deleteUserAddressRequest",
-    });
-
-    const { data } = await axios.delete(
-      `${server}/user/delete-user-address/${id}`,
-      { withCredentials: true }
-    );
-
-    dispatch({
-      type: "deleteUserAddressSuccess",
-      payload: {
-        successMessage: "User deleted successfully!",
-        user: data.user,
-      },
-    });
-  } catch (error) {
-    dispatch({
-      type: "deleteUserAddressFailed",
-      payload: error.response.data.message,
-    });
   }
-};
+);
 
-export const getAllUsers = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "getAllUsersRequest",
-    });
+export const deleteUserAddress = createAsyncThunk(
+  "user/deleteAddress",
+  async (id: string, { dispatch }) => {
+    try {
+      dispatch(deleteUserAddressRequest());
 
-    const { data } = await axios.get(`${server}/user/admin-all-users`, {
-      withCredentials: true,
-    });
+      const { data } = await axios.delete(
+        `${server}/user/delete-user-address/${id}`,
+        { withCredentials: true }
+      );
 
-    dispatch({
-      type: "getAllUsersSuccess",
-      payload: data.users,
-    });
-  } catch (error) {
-    dispatch({
-      type: "getAllUsersFailed",
-      payload: error.response.data.message,
-    });
+      dispatch(
+        deleteUserAddressSuccess({
+          successMessage: "User address deleted successfully!",
+          user: data.user,
+        })
+      );
+      return data.user;
+    } catch (error: unknown) {
+      dispatch(
+        deleteUserAddressFailed(
+          error.response?.data?.message || "Failed to delete address"
+        )
+      );
+      throw error;
+    }
   }
-};
+);
+
+export const getAllUsers = createAsyncThunk(
+  "user/getAllUsers",
+  async (_, { dispatch }) => {
+    try {
+      dispatch(getAllUsersRequest());
+
+      const { data } = await axios.get(`${server}/user/admin-all-users`, {
+        withCredentials: true,
+      });
+
+      dispatch(getAllUsersSuccess(data.users));
+      return data.users;
+    } catch (error: unknown) {
+      dispatch(
+        getAllUsersFailed(
+          error.response?.data?.message || "Failed to get all users"
+        )
+      );
+      throw error;
+    }
+  }
+);

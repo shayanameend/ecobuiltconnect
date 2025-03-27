@@ -1,21 +1,35 @@
-export const addTocart = (data) => async (dispatch, getState) => {
-  dispatch({
-    type: "addToCart",
-    payload: data,
-  });
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  addToCart as addToCartAction,
+  removeFromCart as removeFromCartAction,
+} from "../reducers/cart";
+import { ICartItem } from "../types";
+import { StoreState } from "../store";
 
-  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cart));
+export const addToCart = createAsyncThunk(
+  "cart/add",
+  async (data: ICartItem, { dispatch, getState }) => {
+    dispatch(addToCartAction(data));
 
-  return data;
-};
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify((getState() as StoreState).cart.cart)
+    );
 
-export const removeFromCart = (data) => async (dispatch, getState) => {
-  dispatch({
-    type: "removeFromCart",
-    payload: data._id,
-  });
+    return data;
+  }
+);
 
-  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cart));
+export const removeFromCart = createAsyncThunk(
+  "cart/remove",
+  async (data: ICartItem, { dispatch, getState }) => {
+    dispatch(removeFromCartAction(data._id));
 
-  return data;
-};
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify((getState() as StoreState).cart.cart)
+    );
+
+    return data;
+  }
+);

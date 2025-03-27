@@ -1,109 +1,125 @@
 import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  productCreateRequest,
+  productCreateSuccess,
+  productCreateFail,
+  getAllProductsShopRequest,
+  getAllProductsShopSuccess,
+  getAllProductsShopFailed,
+  deleteProductRequest,
+  deleteProductSuccess,
+  deleteProductFailed,
+  getAllProductsRequest,
+  getAllProductsSuccess,
+  getAllProductsFailed,
+} from "../reducers/product";
+import { IProduct } from "../types";
 
 const server = process.env.BACKEND_URL;
 
-export const createProduct =
-  (
-    name,
-    description,
-    category,
-    tags,
-    originalPrice,
-    discountPrice,
-    stock,
-    shopId,
-    images
-  ) =>
-  async (dispatch) => {
+// Define proper typing for product creation
+interface CreateProductParams {
+  name: string;
+  description: string;
+  category: string;
+  tags: string[];
+  originalPrice: number;
+  discountPrice: number;
+  stock: number;
+  shopId: string;
+  images: string[];
+}
+
+export const createProduct = createAsyncThunk(
+  "product/create",
+  async (productData: CreateProductParams, { dispatch }) => {
     try {
-      dispatch({
-        type: "productCreateRequest",
-      });
+      dispatch(productCreateRequest());
 
-      const { data } = await axios.post(`${server}/product/create-product`, {
-        name,
-        description,
-        category,
-        tags,
-        originalPrice,
-        discountPrice,
-        stock,
-        shopId,
-        images,
-      });
-      dispatch({
-        type: "productCreateSuccess",
-        payload: data.product,
-      });
-    } catch (error) {
-      dispatch({
-        type: "productCreateFail",
-        payload: error.response.data.message,
-      });
+      const { data } = await axios.post(
+        `${server}/product/create-product`,
+        productData,
+        { withCredentials: true }
+      );
+
+      dispatch(productCreateSuccess(data.product));
+      return data.product as IProduct;
+    } catch (error: unknown) {
+      dispatch(
+        productCreateFail(error.response?.data?.message || "An error occurred")
+      );
+      throw error;
     }
-  };
-
-export const getAllProductsShop = (id) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "getAllProductsShopRequest",
-    });
-
-    const { data } = await axios.get(
-      `${server}/product/get-all-products-shop/${id}`
-    );
-    dispatch({
-      type: "getAllProductsShopSuccess",
-      payload: data.products,
-    });
-  } catch (error) {
-    dispatch({
-      type: "getAllProductsShopFailed",
-      payload: error.response.data.message,
-    });
   }
-};
+);
 
-export const deleteProduct = (id) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "deleteProductRequest",
-    });
+export const getAllProductsShop = createAsyncThunk(
+  "product/getAllShopProducts",
+  async (id: string, { dispatch }) => {
+    try {
+      dispatch(getAllProductsShopRequest());
 
-    const { data } = await axios.delete(
-      `${server}/product/delete-shop-product/${id}`,
-      {
-        withCredentials: true,
-      }
-    );
+      const { data } = await axios.get(
+        `${server}/product/get-all-products-shop/${id}`
+      );
 
-    dispatch({
-      type: "deleteProductSuccess",
-      payload: data.message,
-    });
-  } catch (error) {
-    dispatch({
-      type: "deleteProductFailed",
-      payload: error.response.data.message,
-    });
+      dispatch(getAllProductsShopSuccess(data.products));
+      return data.products as IProduct[];
+    } catch (error: unknown) {
+      dispatch(
+        getAllProductsShopFailed(
+          error.response?.data?.message || "Failed to fetch shop products"
+        )
+      );
+      throw error;
+    }
   }
-};
+);
 
-export const getAllProducts = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "getAllProductsRequest",
-    });
+export const deleteProduct = createAsyncThunk(
+  "product/delete",
+  async (id: string, { dispatch }) => {
+    try {
+      dispatch(deleteProductRequest());
 
-    const { data } = await axios.get(`${server}/product/get-all-products`);
-    dispatch({
-      type: "getAllProductsSuccess",
-      payload: data.products,
-    });
-  } catch (error) {
-    dispatch({
-      type: "getAllProductsFailed",
-      payload: error.response.data.message,
-    });
+      const { data } = await axios.delete(
+        `${server}/product/delete-shop-product/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch(deleteProductSuccess(data.message));
+      return data.message;
+    } catch (error: unknown) {
+      dispatch(
+        deleteProductFailed(
+          error.response?.data?.message || "Failed to delete product"
+        )
+      );
+      throw error;
+    }
   }
-};
+);
+
+export const getAllProducts = createAsyncThunk(
+  "product/getAll",
+  async (_, { dispatch }) => {
+    try {
+      dispatch(getAllProductsRequest());
+
+      const { data } = await axios.get(`${server}/product/get-all-products`);
+
+      dispatch(getAllProductsSuccess(data.products));
+      return data.products as IProduct[];
+    } catch (error: unknown) {
+      dispatch(
+        getAllProductsFailed(
+          error.response?.data?.message || "Failed to fetch products"
+        )
+      );
+      throw error;
+    }
+  }
+);

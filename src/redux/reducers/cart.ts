@@ -1,33 +1,33 @@
-import { createReducer } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ICartItem, ICartState } from "../types";
 
-const initialState = {
+const initialState: ICartState = {
   cart: localStorage.getItem("cartItems")
-    ? JSON.parse(localStorage.getItem("cartItems"))
+    ? JSON.parse(localStorage.getItem("cartItems") || "[]")
     : [],
 };
 
-export const cartReducer = createReducer(initialState, {
-  addToCart: (state, action) => {
-    const item = action.payload;
-    const isItemExist = state.cart.find((i) => i._id === item._id);
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {
+    addToCart: (state, action: PayloadAction<ICartItem>) => {
+      const item = action.payload;
+      const isItemExist = state.cart.find((i) => i._id === item._id);
 
-    if (isItemExist) {
-      return {
-        ...state,
-        cart: state.cart.map((i) => (i._id === isItemExist._id ? item : i)),
-      };
-    } else {
-      return {
-        ...state,
-        cart: [...state.cart, item],
-      };
-    }
-  },
-
-  removeFromCart: (state, action) => {
-    return {
-      ...state,
-      cart: state.cart.filter((i) => i._id !== action.payload),
-    };
+      if (isItemExist) {
+        state.cart = state.cart.map((i) =>
+          i._id === isItemExist._id ? item : i
+        );
+      } else {
+        state.cart.push(item);
+      }
+    },
+    removeFromCart: (state, action: PayloadAction<string>) => {
+      state.cart = state.cart.filter((i) => i._id !== action.payload);
+    },
   },
 });
+
+export const { addToCart, removeFromCart } = cartSlice.actions;
+export const cartReducer = cartSlice.reducer;

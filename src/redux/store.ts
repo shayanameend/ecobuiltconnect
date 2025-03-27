@@ -6,6 +6,7 @@ import { eventReducer } from "./reducers/event";
 import { cartReducer } from "./reducers/cart";
 import { wishlistReducer } from "./reducers/wishlist";
 import { orderReducer } from "./reducers/order";
+import { RootState } from "./types";
 
 export const Store = configureStore({
   reducer: {
@@ -18,3 +19,6 @@ export const Store = configureStore({
     order: orderReducer,
   },
 });
+
+export type AppDispatch = typeof Store.dispatch;
+export type StoreState = RootState;

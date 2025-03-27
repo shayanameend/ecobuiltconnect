@@ -1,89 +1,129 @@
 import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  eventCreateRequest,
+  eventCreateSuccess,
+  eventCreateFail,
+  getAlleventsShopRequest,
+  getAlleventsShopSuccess,
+  getAlleventsShopFailed,
+  deleteeventRequest,
+  deleteeventSuccess,
+  deleteeventFailed,
+  getAlleventsRequest,
+  getAlleventsSuccess,
+  getAlleventsFailed,
+} from "../reducers/event";
+import { IEvent } from "../types";
 
 const server = process.env.BACKEND_URL;
 
-// create event
-export const createevent = (data) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "eventCreateRequest",
-    });
+// Define proper typing for event creation
+interface CreateEventParams {
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  images: string[];
+  shopId: string;
+}
 
-    const { d } = await axios.post(`${server}/event/create-event`, data);
-    dispatch({
-      type: "eventCreateSuccess",
-      payload: d.event,
-    });
-  } catch (error) {
-    dispatch({
-      type: "eventCreateFail",
-      payload: error.response.data.message,
-    });
+// create event
+export const createEvent = createAsyncThunk(
+  "event/create",
+  async (data: CreateEventParams, { dispatch }) => {
+    try {
+      dispatch(eventCreateRequest());
+
+      const { data: responseData } = await axios.post(
+        `${server}/event/create-event`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch(eventCreateSuccess(responseData.event));
+      return responseData.event as IEvent;
+    } catch (error: unknown) {
+      dispatch(
+        eventCreateFail(
+          error.response?.data?.message || "Failed to create event"
+        )
+      );
+      throw error;
+    }
   }
-};
+);
 
 // get all events of a shop
-export const getAllEventsShop = (id) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "getAlleventsShopRequest",
-    });
+export const getAllEventsShop = createAsyncThunk(
+  "event/getAllShopEvents",
+  async (id: string, { dispatch }) => {
+    try {
+      dispatch(getAlleventsShopRequest());
 
-    const { data } = await axios.get(`${server}/event/get-all-events/${id}`);
-    dispatch({
-      type: "getAlleventsShopSuccess",
-      payload: data.events,
-    });
-  } catch (error) {
-    dispatch({
-      type: "getAlleventsShopFailed",
-      payload: error.response.data.message,
-    });
+      const { data } = await axios.get(`${server}/event/get-all-events/${id}`);
+
+      dispatch(getAlleventsShopSuccess(data.events));
+      return data.events as IEvent[];
+    } catch (error: unknown) {
+      dispatch(
+        getAlleventsShopFailed(
+          error.response?.data?.message || "Failed to fetch shop events"
+        )
+      );
+      throw error;
+    }
   }
-};
+);
 
 // delete event of a shop
-export const deleteEvent = (id) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "deleteeventRequest",
-    });
+export const deleteEvent = createAsyncThunk(
+  "event/delete",
+  async (id: string, { dispatch }) => {
+    try {
+      dispatch(deleteeventRequest());
 
-    const { data } = await axios.delete(
-      `${server}/event/delete-shop-event/${id}`,
-      {
-        withCredentials: true,
-      }
-    );
+      const { data } = await axios.delete(
+        `${server}/event/delete-shop-event/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
 
-    dispatch({
-      type: "deleteeventSuccess",
-      payload: data.message,
-    });
-  } catch (error) {
-    dispatch({
-      type: "deleteeventFailed",
-      payload: error.response.data.message,
-    });
+      dispatch(deleteeventSuccess(data.message));
+      return data.message;
+    } catch (error: unknown) {
+      dispatch(
+        deleteeventFailed(
+          error.response?.data?.message || "Failed to delete event"
+        )
+      );
+      throw error;
+    }
   }
-};
+);
 
 // get all events
-export const getAllEvents = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "getAlleventsRequest",
-    });
+export const getAllEvents = createAsyncThunk(
+  "event/getAll",
+  async (_, { dispatch }) => {
+    try {
+      dispatch(getAlleventsRequest());
 
-    const { data } = await axios.get(`${server}/event/get-all-events`);
-    dispatch({
-      type: "getAlleventsSuccess",
-      payload: data.events,
-    });
-  } catch (error) {
-    dispatch({
-      type: "getAlleventsFailed",
-      payload: error.response.data.message,
-    });
+      const { data } = await axios.get(`${server}/event/get-all-events`);
+
+      dispatch(getAlleventsSuccess(data.events));
+      return data.events as IEvent[];
+    } catch (error: unknown) {
+      dispatch(
+        getAlleventsFailed(
+          error.response?.data?.message || "Failed to fetch events"
+        )
+      );
+      throw error;
+    }
   }
-};
+);

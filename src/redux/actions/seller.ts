@@ -1,25 +1,33 @@
 import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  getAllSellersRequest,
+  getAllSellersSuccess,
+  getAllSellerFailed,
+} from "../reducers/seller";
+import { ISeller } from "../types";
 
 const server = process.env.BACKEND_URL;
 
-export const getAllSellers = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: "getAllSellersRequest",
-    });
+export const getAllSellers = createAsyncThunk(
+  "seller/getAllSellers",
+  async (_, { dispatch }) => {
+    try {
+      dispatch(getAllSellersRequest());
 
-    const { data } = await axios.get(`${server}/shop/admin-all-sellers`, {
-      withCredentials: true,
-    });
+      const { data } = await axios.get(`${server}/shop/admin-all-sellers`, {
+        withCredentials: true,
+      });
 
-    dispatch({
-      type: "getAllSellersSuccess",
-      payload: data.sellers,
-    });
-  } catch (error) {
-    dispatch({
-      type: "getAllSellerFailed",
-      payload: error.response.data.message,
-    });
+      dispatch(getAllSellersSuccess(data.sellers));
+      return data.sellers as ISeller[];
+    } catch (error: unknown) {
+      dispatch(
+        getAllSellerFailed(
+          error.response?.data?.message || "Failed to fetch sellers"
+        )
+      );
+      throw error;
+    }
   }
-};
+);
