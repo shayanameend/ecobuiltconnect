@@ -25,7 +25,7 @@ const app = {
   },
 };
 
-export const routes = {
+export const paths = {
   api,
   app,
 };

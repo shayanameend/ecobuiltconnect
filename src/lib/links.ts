@@ -1,11 +1,11 @@
-import { routes } from "@/lib/routes";
+import { paths } from "@/lib/paths";
 
 const nav = [
-  routes.app.public.root,
-  routes.app.public.best,
-  routes.app.public.products,
-  routes.app.public.events,
-  routes.app.public.faq,
+  paths.app.public.root,
+  paths.app.public.best,
+  paths.app.public.products,
+  paths.app.public.events,
+  paths.app.public.faq,
 ];
 
 export const links = {
