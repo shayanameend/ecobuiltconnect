@@ -13,10 +13,9 @@ import {
   fetchAllProductsRequest,
   fetchAllProductsSuccess,
   fetchAllProductsFailure,
-} from "../reducers/product";
-import { IProduct } from "../types";
-
-const server = process.env.BACKEND_URL;
+} from "@/redux/reducers/product";
+import { IProduct } from "@/redux/types";
+import { server } from "@/lib/server";
 
 // Define proper typing for product creation
 interface CreateProductParams {

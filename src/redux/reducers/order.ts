@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IOrderState, IOrder } from "../types";
+import { IOrderState, IOrder } from "@/redux/types";
 
 const initialState: IOrderState = {
   isLoading: true,

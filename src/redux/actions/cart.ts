@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addProductToCart as addProductToCartAction,
   removeProductFromCart as removeProductFromCartAction,
-} from "../reducers/cart";
-import { ICartItem } from "../types";
+} from "@/redux/reducers/cart";
+import { ICartItem } from "@/redux/types";
 import { StoreState } from "../store";
 
 export const addProductToCart = createAsyncThunk(

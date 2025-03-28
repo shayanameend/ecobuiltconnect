@@ -13,10 +13,9 @@ import {
   fetchAllEventsRequest,
   fetchAllEventsSuccess,
   fetchAllEventsFailure,
-} from "../reducers/event";
-import { IEvent } from "../types";
-
-const server = process.env.BACKEND_URL;
+} from "@/redux/reducers/event";
+import { IEvent } from "@/redux/types";
+import { server } from "@/lib/server";
 
 // Define proper typing for event creation
 interface CreateEventParams {

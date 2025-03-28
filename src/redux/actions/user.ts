@@ -16,14 +16,13 @@ import {
   getAllUsersRequest,
   getAllUsersSuccess,
   getAllUsersFailed,
-} from "../reducers/user";
+} from "@/redux/reducers/user";
 import {
   loadSellerRequest,
   loadSellerSuccess,
   loadSellerFail,
-} from "../reducers/seller";
-
-const server = process.env.BACKEND_URL;
+} from "@/redux/reducers/seller";
+import { server } from "@/lib/server";
 
 export const loadUser = createAsyncThunk(
   "user/loadUser",

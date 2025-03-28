@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ISellerState, ISeller } from "../types";
+import { ISellerState, ISeller } from "@/redux/types";
 
 const initialState: ISellerState = {
   isLoading: true,

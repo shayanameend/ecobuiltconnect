@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProduct, IWishlistState } from "../types";
+import { IProduct, IWishlistState } from "@/redux/types";
 
 const initialState: IWishlistState = {
   wishlistItems: localStorage.getItem("wishlistItems")

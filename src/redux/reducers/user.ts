@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUser, IUserState } from "../types";
+import { IUser, IUserState } from "@/redux/types";
 
 interface UserAddressPayload {
   successMessage: string;

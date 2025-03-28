@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addProductToWishlist as addProductToWishlistAction,
   removeProductFromWishlist as removeProductFromWishlistAction,
-} from "../reducers/wishlist";
-import { IProduct } from "../types";
+} from "@/redux/reducers/wishlist";
+import { IProduct } from "@/redux/types";
 import { StoreState } from "../store";
 
 export const addProductToWishlist = createAsyncThunk(

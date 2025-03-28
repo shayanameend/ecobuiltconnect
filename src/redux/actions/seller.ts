@@ -4,10 +4,9 @@ import {
   getAllSellersRequest,
   getAllSellersSuccess,
   getAllSellersFailed,
-} from "../reducers/seller";
-import { ISeller } from "../types";
-
-const server = process.env.BACKEND_URL;
+} from "@/redux/reducers/seller";
+import { ISeller } from "@/redux/types";
+import { server } from "@/lib/server";
 
 export const getAllSellers = createAsyncThunk(
   "seller/getAllSellers",

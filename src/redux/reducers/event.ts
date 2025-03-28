@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IEventState, IEvent } from "../types";
+import { IEventState, IEvent } from "@/redux/types";
 
 const initialState: IEventState = {
   isLoading: true,

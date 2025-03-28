@@ -1,9 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
+import { BrowserRouter, Routes, Route } from "react-router";
 
 export function App() {
+  const [stripeKey, setStripeKey] = useState();
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }

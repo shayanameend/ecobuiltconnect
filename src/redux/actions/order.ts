@@ -10,10 +10,9 @@ import {
   getAdminOrdersRequest,
   getAdminOrdersSuccess,
   getAdminOrdersFailed,
-} from "../reducers/order";
-import { IOrder } from "../types";
-
-const server = process.env.BACKEND_URL;
+} from "@/redux/reducers/order";
+import { IOrder } from "@/redux/types";
+import { server } from "@/lib/server";
 
 export const getUserOrders = createAsyncThunk(
   "order/getUserOrders",
