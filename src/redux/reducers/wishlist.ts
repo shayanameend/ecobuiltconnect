@@ -13,13 +13,14 @@ const wishlistSlice = createSlice({
   reducers: {
     addProductToWishlist: (state, action: PayloadAction<IProduct>) => {
       const product = action.payload;
+
       const isItemExist = state.wishlistItems.find(
-        (i) => i._id === product._id
+        (index) => index._id === product._id
       );
 
       if (isItemExist) {
-        state.wishlistItems = state.wishlistItems.map((i) =>
-          i._id === isItemExist._id ? product : i
+        state.wishlistItems = state.wishlistItems.map((index) =>
+          index._id === isItemExist._id ? product : index
         );
       } else {
         state.wishlistItems.push(product);
@@ -27,7 +28,7 @@ const wishlistSlice = createSlice({
     },
     removeProductFromWishlist: (state, action: PayloadAction<string>) => {
       state.wishlistItems = state.wishlistItems.filter(
-        (i) => i._id !== action.payload
+        (index) => index._id !== action.payload
       );
     },
   },
@@ -35,4 +36,5 @@ const wishlistSlice = createSlice({
 
 export const { addProductToWishlist, removeProductFromWishlist } =
   wishlistSlice.actions;
+
 export const wishlistReducer = wishlistSlice.reducer;

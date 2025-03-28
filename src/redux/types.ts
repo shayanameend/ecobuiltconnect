@@ -1,157 +1,154 @@
-// User related types
 export interface IUser {
   _id: string;
+
+  avatar: string;
   name: string;
   email: string;
-  phoneNumber?: string;
-  addresses?: IAddress[];
-  role?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  phone: string;
+  role: string;
+
+  addresses: IAddress[];
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IAddress {
-  _id?: string;
+  _id: string;
+
   country: string;
   city: string;
-  address1: string;
-  address2?: string;
-  zipCode: string;
-  addressType: string;
+  address: string;
+  zip: string;
+  type: string;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface IUserState {
-  isAuthenticated: boolean;
-  isLoading?: boolean;
-  addressLoading?: boolean;
-  usersLoading?: boolean;
-  user?: IUser;
-  users?: IUser[];
-  error?: string | null;
-  successMessage?: string | null;
-}
-
-// Seller related types
-export interface ISeller {
+export interface IShop {
   _id: string;
+
+  avatar: string;
   name: string;
   email: string;
-  description?: string;
-  address?: string;
-  phoneNumber?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  description: string;
+  phone: string;
+  role: string;
+
+  address: IAddress;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface ISellerState {
-  isLoading: boolean;
-  isSeller?: boolean;
-  seller?: ISeller;
-  sellers?: ISeller[];
-  error?: string | null;
-}
-
-// Product related types
 export interface IProduct {
   _id: string;
+
+  images: string[];
   name: string;
   description: string;
   category: string;
-  tags?: string[];
-  originalPrice: number;
-  discountPrice: number;
+  price: number;
+  salePrice?: number | null;
   stock: number;
-  images: string[];
+
   shopId: string;
-  createdAt?: string;
+
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IEvent {
+  _id: string;
+
+  images: string[];
+  name: string;
+  description: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+
+  shopId: string;
+
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ICartItem extends IProduct {
+  qty: number;
+}
+
+export interface IOrderItem {
+  _id: string;
+
+  price: number;
+  qty: number;
+
+  product: IProduct;
+}
+
+export interface IOrder {
+  _id: string;
+
+  totalPrice: number;
+  status: string;
+
+  userId: string;
+  shopId: string;
+  items: IOrderItem[];
+  shippingAddress: IAddress;
+
+  createdAt: string;
   updatedAt?: string;
+}
+
+export interface IUserState {
+  isLoading: boolean;
+  user?: IUser | null;
+  users: IUser[];
+  error?: string | null;
+}
+
+export interface IShopState {
+  isLoading: boolean;
+  shop?: IShop | null;
+  shops: IShop[];
+  error?: string | null;
 }
 
 export interface IProductState {
   isLoading: boolean;
-  product?: IProduct;
-  products?: IProduct[];
-  allProducts?: IProduct[];
-  success?: boolean;
+  product?: IProduct | null;
+  products: IProduct[];
   error?: string | null;
-  message?: string;
-}
-
-// Event related types
-export interface IEvent {
-  _id: string;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-  images: string[];
-  shopId: string;
-  createdAt?: string;
-  updatedAt?: string;
 }
 
 export interface IEventState {
   isLoading: boolean;
-  event?: IEvent;
-  events?: IEvent[];
-  allEvents?: IEvent[];
-  success?: boolean;
+  event?: IEvent | null;
+  events: IEvent[];
   error?: string | null;
-  message?: string;
-}
-
-// Cart related types
-export interface ICartItem extends IProduct {
-  qty: number;
 }
 
 export interface ICartState {
   cartItems: ICartItem[];
 }
 
-// Wishlist related types
 export interface IWishlistState {
   wishlistItems: IProduct[];
 }
 
-// Order related types
-export interface IOrderItem {
-  _id?: string;
-  product: IProduct;
-  qty: number;
-  price: number;
-}
-
-export interface IOrder {
-  _id: string;
-  userId: string;
-  shopId?: string;
-  items: IOrderItem[];
-  totalPrice: number;
-  status: string;
-  paymentInfo: {
-    id: string;
-    status: string;
-    type: string;
-  };
-  shippingAddress: IAddress;
-  createdAt: string;
-  updatedAt?: string;
-}
-
 export interface IOrderState {
   isLoading: boolean;
-  adminOrdersLoading?: boolean;
-  userOrders?: IOrder[];
-  adminOrders?: IOrder[];
+  order?: IOrder | null;
+  orders: IOrder[];
   error?: string | null;
 }
 
-// RootState type
 export interface RootState {
   user: IUserState;
-  seller: ISellerState;
+  shop: IShopState;
   product: IProductState;
   event: IEventState;
   cart: ICartState;

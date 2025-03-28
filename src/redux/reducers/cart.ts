@@ -13,21 +13,27 @@ const cartSlice = createSlice({
   reducers: {
     addProductToCart: (state, action: PayloadAction<ICartItem>) => {
       const product = action.payload;
-      const isItemExist = state.cartItems.find((i) => i._id === product._id);
+
+      const isItemExist = state.cartItems.find(
+        (index) => index._id === product._id
+      );
 
       if (isItemExist) {
-        state.cartItems = state.cartItems.map((i) =>
-          i._id === isItemExist._id ? product : i
+        state.cartItems = state.cartItems.map((index) =>
+          index._id === isItemExist._id ? product : index
         );
       } else {
         state.cartItems.push(product);
       }
     },
     removeProductFromCart: (state, action: PayloadAction<string>) => {
-      state.cartItems = state.cartItems.filter((i) => i._id !== action.payload);
+      state.cartItems = state.cartItems.filter(
+        (index) => index._id !== action.payload
+      );
     },
   },
 });
 
 export const { addProductToCart, removeProductFromCart } = cartSlice.actions;
+
 export const cartReducer = cartSlice.reducer;
